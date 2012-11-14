@@ -3,7 +3,7 @@ template: Hello, %s!
 defaultName: Stranger
 
 # Database settings.
-database:
+databaseConfiguration:
 
   # the name of your JDBC driver
   driverClass: org.h2.Driver
