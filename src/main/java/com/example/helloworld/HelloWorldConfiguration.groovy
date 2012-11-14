@@ -6,7 +6,6 @@ import javax.validation.Valid
 import javax.validation.constraints.NotNull
 import org.codehaus.jackson.annotate.JsonProperty
 import com.yammer.dropwizard.db.DatabaseConfiguration
-import com.example.helloworld.core.Template
 
 /**
  * User: kboon
@@ -24,8 +23,4 @@ class HelloWorldConfiguration extends Configuration {
     @NotNull
     @JsonProperty
     DatabaseConfiguration databaseConfiguration = new DatabaseConfiguration();
-
-    public Template buildTemplate() {
-        return new Template(template, defaultName);
-    }
 }

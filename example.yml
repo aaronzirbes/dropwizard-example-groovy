@@ -44,7 +44,7 @@ http:
 
   # The number of threads dedicated to accepting connections. If omitted, this defaults to the
   # number of logical CPUs on the current machine.
-  acceptorThreadCount: 3
+  acceptorThreads: 3
 
   # The offset of the acceptor threads' priorities. Can be [-5...5], with -5 dropping the acceptor
   # threads to the lowest possible priority and with 5 raising them to the highest priority.
@@ -96,9 +96,11 @@ http:
   # socket will listen on all interfaces.
   # bindHost: app1.example.com
 
-#  ssl:
-#    keyStorePath: ./example.keystore
-#    keyStorePassword: example
+# ssl:
+# keyStorePath: ./example.keystore
+# keyStorePassword: example
+#
+# keyStoreType: JKS # (optional, JKS is default)
 
   # HTTP request log settings
   requestLog:
@@ -115,7 +117,7 @@ http:
       # The file to which statements will be logged.
       currentLogFilename: ./logs/requests.log
 
-      #  When the log file rolls over, the file will be archived to example-2012-03-15.log.gz,
+      # When the log file rolls over, the file will be archived to example-2012-03-15.log.gz,
       # example.log will be truncated, and new statements written to it.
       archivedLogFilenamePattern: ./logs/requests-%d.log.gz
 
@@ -148,6 +150,8 @@ logging:
     # Sets the level for 'com.example.app' to DEBUG.
     com.example.app: DEBUG
 
+    org.hibernate.SQL: ALL
+
   # Settings for logging to stdout.
   console:
 
@@ -169,7 +173,7 @@ logging:
     # The file to which statements will be logged.
     currentLogFilename: ./logs/example.log
 
-    #  When the log file rolls over, the file will be archived to example-2012-03-15.log.gz,
+    # When the log file rolls over, the file will be archived to example-2012-03-15.log.gz,
     # example.log will be truncated, and new statements written to it.
     archivedLogFilenamePattern: ./logs/example-%d.log.gz
 
