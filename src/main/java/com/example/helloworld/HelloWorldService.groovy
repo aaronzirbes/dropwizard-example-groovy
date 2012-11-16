@@ -22,7 +22,7 @@ import com.yammer.dropwizard.migrations.MigrationsBundle
  */
 class HelloWorldService extends Service<HelloWorldConfiguration> {
     public static void main(String[] args) throws Exception {
-        new HelloWorldService().run(args);
+        new HelloWorldService().run(args)
     }
 
     private final HibernateBundle<HelloWorldConfiguration> hibernateBundle =
@@ -31,33 +31,36 @@ class HelloWorldService extends Service<HelloWorldConfiguration> {
             public DatabaseConfiguration getDatabaseConfiguration(HelloWorldConfiguration configuration) {
                 return configuration.getDatabaseConfiguration();
             }
-        };
+        }
 
-    @Override
-    public void initialize(Bootstrap<HelloWorldConfiguration> bootstrap) {
-        bootstrap.setName("hello-world");
-        bootstrap.addCommand(new RenderCommand());
-        bootstrap.addBundle(new AssetsBundle());
-        bootstrap.addBundle(new MigrationsBundle<HelloWorldConfiguration>() {
+    private final MigrationsBundle<HelloWorldConfiguration> migrationsBundle =
+        new MigrationsBundle<HelloWorldConfiguration>() {
             @Override
             public DatabaseConfiguration getDatabaseConfiguration(HelloWorldConfiguration configuration) {
                 return configuration.getDatabaseConfiguration();
             }
-        });
-        bootstrap.addBundle(hibernateBundle);
+        }
+
+    @Override
+    public void initialize(Bootstrap<HelloWorldConfiguration> bootstrap) {
+        bootstrap.setName("hello-world");
+        bootstrap.addCommand new RenderCommand()
+        bootstrap.addBundle new AssetsBundle()
+        bootstrap.addBundle migrationsBundle
+        bootstrap.addBundle hibernateBundle
     }
 
     @Override
     public void run(HelloWorldConfiguration configuration,
                     Environment environment) throws ClassNotFoundException {
-        final PersonDAO dao = new PersonDAO(hibernateBundle.getSessionFactory());
+
+        final PersonDAO dao = new PersonDAO(hibernateBundle.getSessionFactory())
 
         environment.addProvider(new BasicAuthProvider<User>(new ExampleAuthenticator(),
-                "SUPER SECRET STUFF"));
+                "SUPER SECRET STUFF"))
 
-        environment.addHealthCheck(new TemplateHealthCheck());
-
-        environment.addResource(new PeopleResource(dao));
-        environment.addResource(new PersonResource(dao));
+        environment.addHealthCheck(new TemplateHealthCheck())
+        environment.addResource(new PeopleResource(dao))
+        environment.addResource(new PersonResource(dao))
     }
 }
