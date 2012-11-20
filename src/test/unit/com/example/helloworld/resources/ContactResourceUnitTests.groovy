@@ -13,7 +13,7 @@ import org.hibernate.SessionFactory
  */
 class ContactResourceUnitTests {
     @Test
-    public void contactResource_callsHibernateDAO() {
+    public void createContact_callsHibernateDAO() {
         Contact expectedContact = new Contact()
 
         MockFor contactDAOMock = new MockFor(ContactDAO)
@@ -33,5 +33,26 @@ class ContactResourceUnitTests {
         assert newContact
         contactDAOMock.verify(contactResource.contactDAO)
 
+    }
+
+    @Test
+    public void list_callsHibernateDAO() {
+        List<Contact> expectedContactList = [new Contact(), new Contact(), new Contact()]
+
+        MockFor contactDAOMock = new MockFor(ContactDAO)
+        MockFor sessionFactory = new MockFor(SessionFactory)
+
+        contactDAOMock.demand.list() {  ->
+            return expectedContactList
+        }
+
+        ContactDAO mockDAOInstance = contactDAOMock.proxyInstance(sessionFactory.proxyInstance())
+
+        ContactResource contactResource = new ContactResource(mockDAOInstance)
+
+        List<Contact> contactList = contactResource.listContact()
+
+        contactDAOMock.verify(contactResource.contactDAO)
+        assert contactList == expectedContactList
     }
 }

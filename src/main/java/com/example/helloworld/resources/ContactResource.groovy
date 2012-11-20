@@ -9,7 +9,6 @@ import javax.ws.rs.Produces
 import javax.ws.rs.core.MediaType
 import com.yammer.dropwizard.hibernate.UnitOfWork
 import javax.ws.rs.GET
-import com.example.helloworld.core.Person
 
 /**
  * User: kboon
@@ -24,7 +23,6 @@ class ContactResource {
         this.contactDAO = contactDAO
     }
 
-    //TODO: I had to remove the @Transactional Annotation because maven couldn't find com.yammer.dropwizard.hibernate.Transactional. Need to check Coda's example.
     @POST
     @UnitOfWork
     public Contact createContact(Contact deserializedContact) {
@@ -34,6 +32,6 @@ class ContactResource {
     @GET
     @UnitOfWork
     public List<Contact> listContact() {
-        return contactDAO.findAll();
+        return contactDAO.list()
     }
 }

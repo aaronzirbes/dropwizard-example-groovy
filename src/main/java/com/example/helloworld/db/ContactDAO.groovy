@@ -19,7 +19,7 @@ class ContactDAO extends AbstractDAO<Contact> {
         return persist(contact)
     }
 
-    public List<Contact> findAll() {
+    public List<Contact> list() {
         return list(namedQuery("com.example.helloworld.core.Contact.findAll"));
     }
 }
