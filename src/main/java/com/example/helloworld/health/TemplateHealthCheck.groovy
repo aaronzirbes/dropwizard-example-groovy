@@ -1,7 +1,6 @@
 package com.example.helloworld.health
 
 import com.yammer.metrics.core.HealthCheck
-import com.google.common.base.Optional
 
 /**
  * User: kboon

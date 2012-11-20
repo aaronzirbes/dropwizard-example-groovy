@@ -1,20 +1,17 @@
 package com.example.helloworld
 
-import com.example.helloworld.auth.ExampleAuthenticator
 import com.example.helloworld.cli.RenderCommand
-import com.example.helloworld.core.User
-import com.example.helloworld.db.PersonDAO
-import com.example.helloworld.health.TemplateHealthCheck
-import com.example.helloworld.resources.PeopleResource
-import com.example.helloworld.resources.PersonResource
+import com.example.helloworld.db.ContactDAO
+import com.example.helloworld.resources.ContactResource
 import com.yammer.dropwizard.Service
 import com.yammer.dropwizard.assets.AssetsBundle
-import com.yammer.dropwizard.auth.basic.BasicAuthProvider
 import com.yammer.dropwizard.config.Bootstrap
 import com.yammer.dropwizard.config.Environment
 import com.yammer.dropwizard.db.DatabaseConfiguration
 import com.yammer.dropwizard.hibernate.HibernateBundle
 import com.yammer.dropwizard.migrations.MigrationsBundle
+import com.example.helloworld.core.Contact
+import com.example.helloworld.core.Address
 
 /**
  * User: kboon
@@ -25,15 +22,15 @@ class HelloWorldService extends Service<HelloWorldConfiguration> {
         new HelloWorldService().run(args)
     }
 
-    private final HibernateBundle<HelloWorldConfiguration> hibernateBundle =
-        new HibernateBundle<HelloWorldConfiguration>("com.example.helloworld.core") {
+    HibernateBundle<HelloWorldConfiguration> hibernateBundle =
+        new HibernateBundle<HelloWorldConfiguration>([Contact, Address]) {
             @Override
             public DatabaseConfiguration getDatabaseConfiguration(HelloWorldConfiguration configuration) {
                 return configuration.getDatabaseConfiguration();
             }
         }
 
-    private final MigrationsBundle<HelloWorldConfiguration> migrationsBundle =
+    MigrationsBundle<HelloWorldConfiguration> migrationsBundle =
         new MigrationsBundle<HelloWorldConfiguration>() {
             @Override
             public DatabaseConfiguration getDatabaseConfiguration(HelloWorldConfiguration configuration) {
@@ -41,11 +38,15 @@ class HelloWorldService extends Service<HelloWorldConfiguration> {
             }
         }
 
+    RenderCommand renderCommand = new RenderCommand()
+    AssetsBundle assetsBundle = new AssetsBundle()
+
     @Override
     public void initialize(Bootstrap<HelloWorldConfiguration> bootstrap) {
-        bootstrap.setName("hello-world");
-        bootstrap.addCommand new RenderCommand()
-        bootstrap.addBundle new AssetsBundle()
+        bootstrap.name = "hello-world"
+
+        bootstrap.addCommand renderCommand
+        bootstrap.addBundle assetsBundle
         bootstrap.addBundle migrationsBundle
         bootstrap.addBundle hibernateBundle
     }
@@ -54,13 +55,7 @@ class HelloWorldService extends Service<HelloWorldConfiguration> {
     public void run(HelloWorldConfiguration configuration,
                     Environment environment) throws ClassNotFoundException {
 
-        final PersonDAO dao = new PersonDAO(hibernateBundle.getSessionFactory())
-
-        environment.addProvider(new BasicAuthProvider<User>(new ExampleAuthenticator(),
-                "SUPER SECRET STUFF"))
-
-        environment.addHealthCheck(new TemplateHealthCheck())
-        environment.addResource(new PeopleResource(dao))
-        environment.addResource(new PersonResource(dao))
+        final ContactDAO contactDAO = new ContactDAO(hibernateBundle.getSessionFactory())
+        environment.addResource(new ContactResource(contactDAO))
     }
 }

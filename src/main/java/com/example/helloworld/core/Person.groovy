@@ -5,7 +5,9 @@ package com.example.helloworld.core
  * Date: 11/14/12
  */
 
-import javax.persistence.*;
+
+import javax.persistence.*
+import com.fasterxml.jackson.annotation.JsonProperty
 
 @Entity
 @Table(name = "people")
@@ -22,11 +24,24 @@ import javax.persistence.*;
 class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonProperty
     long id;
 
     @Column(name = "fullName", nullable = false)
-    String fullName;
+    @JsonProperty
+    String name;
 
     @Column(name = "jobTitle", nullable = false)
+    @JsonProperty
     String jobTitle;
+
+    @Column(name = "address")
+    @JsonProperty
+    Address address
+
+    public boolean equals(Person otherPerson) {
+        return (otherPerson?.jobTitle == this?.jobTitle
+                && otherPerson?.name == this?.name
+        && otherPerson?.address == this?.address)
+    }
 }

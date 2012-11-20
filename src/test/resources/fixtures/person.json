@@ -1,0 +1,8 @@
+{
+    "id": 0,
+    "name": "Luther Blissett",
+    "jobTitle": "senior vice chairman director dude",
+    "address":
+        {"id": 0, "address1":"15 South 5th Street","address2":"","city":"Minneapolis","state":"MN","county":"Hennepin","zipCode":"55402"}
+
+}
