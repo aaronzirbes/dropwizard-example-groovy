@@ -211,7 +211,7 @@
                                         implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.example.helloworld.HelloWorldService</mainClass>
+                                    <mainClass>com.example.helloworld.ContactsService</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

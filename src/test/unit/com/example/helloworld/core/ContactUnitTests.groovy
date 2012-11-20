@@ -1,5 +1,4 @@
-package com.example.helloworld.com.example.helloworld.core
-
+package com.example.helloworld.core
 import com.example.helloworld.core.Contact
 import org.junit.Before
 import org.junit.Test

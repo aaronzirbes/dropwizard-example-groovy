@@ -1,6 +1,5 @@
 package com.example.helloworld
 
-import com.example.helloworld.cli.RenderCommand
 import com.example.helloworld.db.ContactDAO
 import com.example.helloworld.resources.ContactResource
 import com.yammer.dropwizard.Service
@@ -17,42 +16,40 @@ import com.example.helloworld.core.Address
  * User: kboon
  * Date: 11/14/12
  */
-class HelloWorldService extends Service<HelloWorldConfiguration> {
+class ContactsService extends Service<ContactsConfiguration> {
     public static void main(String[] args) throws Exception {
-        new HelloWorldService().run(args)
+        new ContactsService().run(args)
     }
 
-    HibernateBundle<HelloWorldConfiguration> hibernateBundle =
-        new HibernateBundle<HelloWorldConfiguration>([Contact, Address]) {
+    HibernateBundle<ContactsConfiguration> hibernateBundle =
+        new HibernateBundle<ContactsConfiguration>([Contact, Address]) {
             @Override
-            public DatabaseConfiguration getDatabaseConfiguration(HelloWorldConfiguration configuration) {
+            public DatabaseConfiguration getDatabaseConfiguration(ContactsConfiguration configuration) {
                 return configuration.getDatabaseConfiguration();
             }
         }
 
-    MigrationsBundle<HelloWorldConfiguration> migrationsBundle =
-        new MigrationsBundle<HelloWorldConfiguration>() {
+    MigrationsBundle<ContactsConfiguration> migrationsBundle =
+        new MigrationsBundle<ContactsConfiguration>() {
             @Override
-            public DatabaseConfiguration getDatabaseConfiguration(HelloWorldConfiguration configuration) {
+            public DatabaseConfiguration getDatabaseConfiguration(ContactsConfiguration configuration) {
                 return configuration.getDatabaseConfiguration();
             }
         }
 
-    RenderCommand renderCommand = new RenderCommand()
     AssetsBundle assetsBundle = new AssetsBundle()
 
     @Override
-    public void initialize(Bootstrap<HelloWorldConfiguration> bootstrap) {
+    public void initialize(Bootstrap<ContactsConfiguration> bootstrap) {
         bootstrap.name = "hello-world"
 
-        bootstrap.addCommand renderCommand
         bootstrap.addBundle assetsBundle
         bootstrap.addBundle migrationsBundle
         bootstrap.addBundle hibernateBundle
     }
 
     @Override
-    public void run(HelloWorldConfiguration configuration,
+    public void run(ContactsConfiguration configuration,
                     Environment environment) throws ClassNotFoundException {
 
         final ContactDAO contactDAO = new ContactDAO(hibernateBundle.getSessionFactory())

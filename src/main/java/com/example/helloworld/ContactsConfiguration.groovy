@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull
  * User: kboon
  * Date: 11/14/12
  */
-class HelloWorldConfiguration extends Configuration {
+class ContactsConfiguration extends Configuration {
 
     @NotEmpty
     String template;

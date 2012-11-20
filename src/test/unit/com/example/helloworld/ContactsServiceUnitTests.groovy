@@ -2,10 +2,9 @@ package com.example.helloworld
 
 import org.junit.Test
 import com.yammer.dropwizard.config.Bootstrap
-import com.example.helloworld.cli.RenderCommand
-import com.yammer.dropwizard.assets.AssetsBundle
+
 import com.yammer.dropwizard.config.Environment
-import com.yammer.dropwizard.config.Configuration
+
 import com.yammer.dropwizard.json.ObjectMapperFactory
 import groovy.mock.interceptor.MockFor
 import com.yammer.dropwizard.hibernate.HibernateBundle
@@ -17,13 +16,13 @@ import org.junit.Ignore
  * User: kboon
  * Date: 11/16/12
  */
-class HelloWorldServiceUnitTests {
+class ContactsServiceUnitTests {
     MockFor hibernateBundleMock
 
     @Test
     public void initialize_addsToBootstrap() {
-        HelloWorldService helloWorldService = new HelloWorldService()
-        Bootstrap<HelloWorldConfiguration> bootstrap = new Bootstrap<HelloWorldConfiguration>(helloWorldService)
+        ContactsService helloWorldService = new ContactsService()
+        Bootstrap<ContactsConfiguration> bootstrap = new Bootstrap<ContactsConfiguration>(helloWorldService)
 
         helloWorldService.initialize(bootstrap)
 
@@ -39,8 +38,8 @@ class HelloWorldServiceUnitTests {
     public void run_addsToEnvironment() {
         hibernateBundleMock = new MockFor(HibernateBundle)
 
-        HelloWorldService helloWorldService = new HelloWorldService()
-        HelloWorldConfiguration helloWorldConfiguration = new HelloWorldConfiguration()
+        ContactsService helloWorldService = new ContactsService()
+        ContactsConfiguration helloWorldConfiguration = new ContactsConfiguration()
         Environment environment = new Environment("", helloWorldConfiguration, new ObjectMapperFactory())
 
         helloWorldService.run(helloWorldConfiguration, environment)

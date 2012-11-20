@@ -1,7 +1,6 @@
 package com.example.helloworld.db
 
 import com.example.helloworld.core.Contact
-import com.example.helloworld.core.Person
 import com.yammer.dropwizard.hibernate.AbstractDAO
 import org.hibernate.SessionFactory
 
