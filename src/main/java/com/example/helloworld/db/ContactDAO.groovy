@@ -11,6 +11,8 @@ import org.hibernate.SessionFactory
 // TODO: write a unit test for this class
 class ContactDAO extends AbstractDAO<Contact> {
 
+    protected static final String FIND_ALL_QUERY = "com.example.helloworld.core.Contact.findAll"
+
     public ContactDAO(SessionFactory factory) {
         super(factory);
     }
@@ -20,6 +22,6 @@ class ContactDAO extends AbstractDAO<Contact> {
     }
 
     public List<Contact> list() {
-        return list(namedQuery("com.example.helloworld.core.Contact.findAll"));
+        return list(namedQuery(FIND_ALL_QUERY));
     }
 }
