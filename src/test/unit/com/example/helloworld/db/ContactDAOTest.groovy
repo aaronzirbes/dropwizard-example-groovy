@@ -1,15 +1,10 @@
 package com.example.helloworld.db
 
-import org.junit.Test
 import com.example.helloworld.core.Contact
 import groovy.mock.interceptor.MockFor
-import org.hibernate.SessionFactory
 import org.hibernate.Session
-import javax.persistence.NamedQuery
-import org.hibernate.Query
-import org.hibernate.internal.SQLQueryImpl
-import org.hibernate.internal.QueryImpl
-import org.hibernate.engine.query.spi.ParameterMetadata
+import org.hibernate.SessionFactory
+import org.junit.Test
 
 /**
  * User: kboon

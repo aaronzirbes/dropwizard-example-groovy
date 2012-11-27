@@ -9,6 +9,7 @@ import javax.ws.rs.Produces
 import javax.ws.rs.core.MediaType
 import com.yammer.dropwizard.hibernate.UnitOfWork
 import javax.ws.rs.GET
+import com.yammer.metrics.annotation.Timed
 
 /**
  * User: kboon
@@ -23,12 +24,14 @@ class ContactResource {
         this.contactDAO = contactDAO
     }
 
+    @Timed(name = "create-contacts")
     @POST
     @UnitOfWork
     public Contact createContact(Contact deserializedContact) {
         return contactDAO.create(deserializedContact)
     }
 
+    @Timed(name = "list-contacts")
     @GET
     @UnitOfWork
     public List<Contact> listContact() {
