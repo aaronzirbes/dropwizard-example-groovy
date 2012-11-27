@@ -3,3 +3,4 @@ logs/
 *.iml
 *.ipr
 *.iws
+.idea/
