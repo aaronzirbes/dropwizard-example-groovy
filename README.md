@@ -44,3 +44,40 @@ To test the example application run the following commands.
 
         curl  -H "Content-Type: application/json" -H "Accept: application/json"  -X POST -d @src/test/resources/fixtures/contact.json http://localhost:8080/contacts
         curl http://localhost:8080/contacts
+
+# Testing with Maven
+
+Currently only the unit tests are exposed to maven and intellij must be used
+to run the integration tests. To run the tests execute:
+
+        mvn test
+
+# Building with Gradle
+
+I think it would be worth a discussion on the best workflow for the build
+but this is a good proof of concept. Currently the fatJar step is fairly slow
+so running that every time we run tests is not what we would want to do.
+Currently the fatJar step takes around 3:30 to complete and this could be
+made much faster (like shade for mvn) by updating how it is created.
+
+* Download and install gradle (Tested v1.3) http://gradle.org/downloads
+* To run the unit tests:
+
+        gradle test
+
+* To run the integration tests:
+
+        gradle integrationTest
+
+* To build a fat jar
+
+        gradle fatJar
+        
+* To build a regular jar and run tests (currently does not build a fat jar):
+
+        gradle build
+
+* Once the fat jar is build it will be located at the below path and can be used similar to the instructions above.
+
+        build/libs/dropwizard-example-groovy-0.6.0-SNAPSHOT.jar
+
