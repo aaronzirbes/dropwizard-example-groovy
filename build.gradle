@@ -1,4 +1,13 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'eu.appsatori:gradle-fatjar-plugin:0.2-rc1'
+    }
+}
 apply plugin: 'groovy'
+apply plugin: 'fatjar'
 
 // Build properties
 sourceCompatibility = 1.6
@@ -19,7 +28,10 @@ sourceSets {
     }
 }
 
-jar {
+fatJar {
+    exclude 'META-INF/*.DSA'
+    exclude 'META-INF/*.DSA'
+    exclude 'META-INF/*.RSA'
     manifest {
         attributes 'Main-Class': 'com.example.helloworld.ContactsService'
     }
@@ -68,8 +80,8 @@ dependencies {
 
     // Setup spock
 
-  // mandatory dependencies for using Spock
-  testCompile "org.spockframework:spock-core:1.0-groovy-2.0-SNAPSHOT"
+    // mandatory dependencies for using Spock
+    testCompile "org.spockframework:spock-core:1.0-groovy-2.0-SNAPSHOT"
 
   // optional dependencies for using Spock
 //  testCompile "org.hamcrest:hamcrest-core:1.3" // only necessary if Hamcrest matchers are used
