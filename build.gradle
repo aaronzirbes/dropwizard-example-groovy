@@ -1,0 +1,107 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'eu.appsatori:gradle-fatjar-plugin:0.2-rc1'
+    }
+}
+apply plugin: 'groovy'
+apply plugin: 'fatjar'
+
+// Build properties
+sourceCompatibility = 1.6
+version = '0.6.0-SNAPSHOT'
+String dropwizardVersion = '0.6.0'
+
+repositories {
+    mavenCentral()
+
+    // Spock snapshots are available from the Sonatype OSS snapshot repository
+    maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
+sourceSets {
+    integrationTest {
+        groovy.srcDir file('src/integration/groovy')
+        resources.srcDir file('src/integration/resources')
+    }
+}
+
+fatJar {
+    exclude 'META-INF/*.DSA'
+    exclude 'META-INF/*.DSA'
+    exclude 'META-INF/*.RSA'
+    manifest {
+        attributes 'Main-Class': 'com.example.helloworld.ContactsService'
+    }
+}
+
+dependencies {
+    groovy 'org.codehaus.groovy:groovy-all:2.0.5'
+    compile ("com.yammer.dropwizard:dropwizard-core:${dropwizardVersion}") {
+        // provided by groovy-eclipse-batch
+        exclude group: 'asm', module: 'asm'
+    }
+    compile ("com.yammer.dropwizard:dropwizard-testing:${dropwizardVersion}") {
+        // provided by groovy-eclipse-batch
+        exclude group: 'asm', module: 'asm'
+    }
+    compile ("com.yammer.dropwizard:dropwizard-hibernate:${dropwizardVersion}") {
+        // provided by groovy-eclipse-batch
+        exclude group: 'org.codehaus.groovy', module: 'groovy'
+        exclude group: 'asm', module: 'asm'
+    }
+    compile ("com.yammer.dropwizard:dropwizard-hibernate:${dropwizardVersion}") {
+        exclude group: 'asm', module: 'asm'
+    }
+
+    compile ("com.yammer.dropwizard:dropwizard-migrations:${dropwizardVersion}") {
+        // provided by groovy-eclipse-batch
+        exclude group: 'org.codehaus.groovy', module: 'groovy'
+        exclude group: 'antlr', module: 'antlr'
+        exclude group: 'asm', module: 'asm'
+    }
+    compile ("com.yammer.dropwizard:dropwizard-auth:${dropwizardVersion}") {
+        // provided by groovy-eclipse-batch
+        exclude group: 'org.codehaus.groovy', module: 'groovy'
+        exclude group: 'antlr', module: 'antlr'
+        exclude group: 'asm', module: 'asm'
+    }
+    compile 'com.h2database:h2:1.3.168'
+    testCompile 'junit:junit:4.11'
+    testCompile 'org.mockito:mockito-all:1.9.5'
+    compile 'org.easytesting:fest-assert-core:2.0M8'
+    compile 'asm:asm:3.3'
+
+    // Needed to get around bug in gradle due to reflection. Normally this is needed at runtime only.
+    // http://forums.gradle.org/gradle/topics/receiving_a_java_lang_exceptionininitializererror_when_building_groovy_but_not_java_for_same_project?topic=receiving_a_java_lang_exceptionininitializererror_when_building_groovy_but_not_java_for_same_project
+    compile group: 'com.sun.jersey', name: 'jersey-client', version: '1.15'
+
+    // Setup spock
+
+    // mandatory dependencies for using Spock
+    testCompile "org.spockframework:spock-core:1.0-groovy-2.0-SNAPSHOT"
+
+  // optional dependencies for using Spock
+//  testCompile "org.hamcrest:hamcrest-core:1.3" // only necessary if Hamcrest matchers are used
+//  testRuntime "cglib:cglib-nodep:2.2.2"          // allows mocking of classes (in addition to interfaces)
+//  testRuntime "org.objenesis:objenesis:1.2"    // allows mocking of classes without default constructor (together with CGLIB)
+
+
+    // Integration tests dependencies
+    integrationTestCompile 'commons-cli:commons-cli:1.2'
+    integrationTestCompile sourceSets.main.output
+    integrationTestCompile configurations.testCompile
+    integrationTestCompile sourceSets.test.output
+    integrationTestRuntime configurations.testRuntime
+
+}
+
+task integrationTest(type: Test, dependsOn: jar) {
+    testClassesDir = sourceSets.integrationTest.output.classesDir
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    systemProperties['jar.path'] = jar.archivePath
+}
+
+check.dependsOn integrationTest

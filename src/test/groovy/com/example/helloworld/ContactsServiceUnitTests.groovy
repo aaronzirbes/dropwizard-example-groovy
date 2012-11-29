@@ -19,6 +19,7 @@ import org.junit.Ignore
 class ContactsServiceUnitTests {
     MockFor hibernateBundleMock
 
+    @Ignore
     @Test
     public void initialize_addsToBootstrap() {
         ContactsService helloWorldService = new ContactsService()
